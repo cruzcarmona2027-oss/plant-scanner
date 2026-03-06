@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Plant Scanner</title>
+</head>
+
+<body>
+
+<h1>Plant Scanner 🌿</h1>
+<p>Upload a plant photo to identify it</p>
+
+<input type="file" id="imageInput">
+<button onclick="identifyPlant()">Scan Plant</button>
+
+<p id="result"></p>
+
+<script>
+async function identifyPlant() {
+
+const fileInput = document.getElementById("imageInput");
+const file = fileInput.files[0];
+
+let formData = new FormData();
+formData.append("images", file);
+
+const response = await fetch(
+"https://my-api.plantnet.org/v2/identify/all?api-key=YOUR_API_KEY",
+{
+method: "POST",
+body: formData
+}
+);
+
+const data = await response.json();
+
+document.getElementById("result").innerText =
+"Plant: " + data.results[0].species.scientificNameWithoutAuthor;
+
+}
+</script>
+
+</body>
+</html>
